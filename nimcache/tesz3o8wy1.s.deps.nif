@@ -1,4 +1,0 @@
-(.nif27)
-(.indexat 291              )
-(stmts
- (import "C\3A\5CUsers\5Csavant\5Cnimony\5Clib\5Cstd\5Csystem.nim" "C\3A\5CUsers\5Csavant\5Cnimony\5Clib\5Cstd\5Cassertions.nim" "C\3A\5CUsers\5Csavant\5Cnimony\5Clib\5Cstd\5Csyncio.nim" "C\3A\5CUsers\5Csavant\5CProjects\5Cjwt\5Csrc\5Csha2.nim"))(.index)
