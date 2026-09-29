@@ -1,0 +1,81 @@
+(.nif27)
+(.vendor "Nifler")
+(.dialect "nim-parsed")
+(stmts@,1,tests/test_sha2.nim
+ (import
+  (infix@A / std~3 assertions@1))
+ (import@,1
+  (infix@A / std~3 syncio@1))
+ (import@,2
+  (infix@D /
+   (prefix~6 \2E\2E/ src@3)sha2@1))
+ (proc@,4 toHex@5 . . .
+  (params@A
+   (param@1 data . .
+    (at@F openArray~9 byte@1).))string@P . .
+  (stmts@2,1
+   (const@6 hexChars . . . "0123456789abcdef"@B)
+   (asgn@7,1 result~7
+    (call@B newString~9
+     (infix@A *
+      (dot~5 data~4 len@1)2@2)))
+   (for@4,2 data@8
+    (unpackflat
+     (let i . . ..)
+     (let b@3 . . ..))
+    (stmts~2,1
+     (asgn@C
+      (at~6 result~6
+       (infix@2 * i~1 2@1))
+      (at@A hexChars~8
+       (call@4 int~3
+        (infix@3 shr b~2 4@4))))
+     (asgn@E,1
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 2@1)1@1))
+      (at@A hexChars~8
+       (call@4 int~3
+        (infix@3 and b~2
+         (suf@4 15u "u8")))))))))
+ (proc@,B bytesOf@5 . . .
+  (params@C
+   (param@1 s . . string@3 .))
+  (at@G seq~3 byte@1). .
+  (stmts@2,1
+   (asgn@7 result~7
+    (call@E
+     (at~6 newSeq~6 byte@1)
+     (dot@2 s~1 len@1)))
+   (for@4,1 s@8
+    (unpackflat
+     (let i . . ..)
+     (let c@3 . . ..))
+    (stmts~2,1
+     (asgn@A
+      (at~4 result~6 i@1)
+      (call@6 byte~4 c@1))))))
+ (cmd@,H assert
+  (infix@b ==
+   (call~P toHex~5
+    (call@7 sha256~6
+     (call@8 bytesOf~7 "abc"@1)))"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"~Z,1))
+ (cmd@,J assert
+  (infix@Y ==
+   (call~M toHex~5
+    (call@7 sha256~6
+     (call@8 bytesOf~7 ""@1)))"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"~W,1))
+ (cmd@,L echo "sha256\3A OK"@5)
+ (cmd@,N assert
+  (infix@b ==
+   (call~P toHex~5
+    (call@7 sha384~6
+     (call@8 bytesOf~7 "abc"@1)))"cb00753f45a35e8bb5a03d699ac65007272c32ab0eded1631a8b605a43ff5bed8086072ba1e7cc2358baeca134c825a7"~Z,1))
+ (cmd@,P echo "sha384\3A OK"@5)
+ (cmd@,R assert
+  (infix@b ==
+   (call~P toHex~5
+    (call@7 sha512~6
+     (call@8 bytesOf~7 "abc"@1)))"ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f"~Z,1))
+ (cmd@,T echo "sha512\3A OK"@5)
+ (cmd@,V echo "all sha2 vectors passed"@5))

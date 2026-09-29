@@ -1,0 +1,11 @@
+(.nif27)
+(.vendor "Nifler")
+(.dialect "nim-deps")
+(stmts
+ (import
+  (infix / std assertions))
+ (import
+  (infix / std syncio))
+ (import
+  (infix /
+   (prefix \2E\2E/ src)sha2)))

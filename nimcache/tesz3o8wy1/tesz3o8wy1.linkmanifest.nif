@@ -1,0 +1,18 @@
+(.nif27)
+(link
+ (apptype "console")
+ (output "nimcache\5Ctesz3o8wy1\5Ctest_sha2.exe")
+ (file "C\3A\5CUsers\5Csavant\5Cnimony\5Cnimcache_static\5Cstatic_2e1650d584bcbb95.o"
+  (kind "obj"))
+ (file "nimcache\5Ctesz3o8wy1\5Ctesz3o8wy1.o"
+  (kind "obj"))
+ (file "nimcache\5Ctesz3o8wy1\5Csysvq0asl.o"
+  (kind "obj"))
+ (file "nimcache\5Ctesz3o8wy1\5Cassy765wm.o"
+  (kind "obj"))
+ (file "nimcache\5Ctesz3o8wy1\5Csyn1lfpjv.o"
+  (kind "obj"))
+ (file "nimcache\5Ctesz3o8wy1\5Cfor2ybv4p1.o"
+  (kind "obj"))
+ (file "nimcache\5Ctesz3o8wy1\5Cshahpid5u.o"
+  (kind "obj")))

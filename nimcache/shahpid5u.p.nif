@@ -1,0 +1,884 @@
+(.nif27)
+(.vendor "Nifler")
+(.dialect "nim-parsed")
+(stmts@,1,src/sha2.nim
+ (comment)
+ (const@6,9 sha256K . .
+  (at@E array~5 64@1 uint32@5)
+  (bracket@T
+   (suf~X,1 1116352408u "u32")
+   (suf~H,1 1899447441u "u32")
+   (suf~1,1 3049323471u "u32")
+   (suf@F,1 3921009573u "u32")
+   (suf~X,2 961987163u "u32")
+   (suf~H,2 1508970993u "u32")
+   (suf~1,2 2453635748u "u32")
+   (suf@F,2 2870763221u "u32")
+   (suf~X,3 3624381080u "u32")
+   (suf~H,3 310598401u "u32")
+   (suf~1,3 607225278u "u32")
+   (suf@F,3 1426881987u "u32")
+   (suf~X,4 1925078388u "u32")
+   (suf~H,4 2162078206u "u32")
+   (suf~1,4 2614888103u "u32")
+   (suf@F,4 3248222580u "u32")
+   (suf~X,5 3835390401u "u32")
+   (suf~H,5 4022224774u "u32")
+   (suf~1,5 264347078u "u32")
+   (suf@F,5 604807628u "u32")
+   (suf~X,6 770255983u "u32")
+   (suf~H,6 1249150122u "u32")
+   (suf~1,6 1555081692u "u32")
+   (suf@F,6 1996064986u "u32")
+   (suf~X,7 2554220882u "u32")
+   (suf~H,7 2821834349u "u32")
+   (suf~1,7 2952996808u "u32")
+   (suf@F,7 3210313671u "u32")
+   (suf~X,8 3336571891u "u32")
+   (suf~H,8 3584528711u "u32")
+   (suf~1,8 113926993u "u32")
+   (suf@F,8 338241895u "u32")
+   (suf~X,9 666307205u "u32")
+   (suf~H,9 773529912u "u32")
+   (suf~1,9 1294757372u "u32")
+   (suf@F,9 1396182291u "u32")
+   (suf~X,A 1695183700u "u32")
+   (suf~H,A 1986661051u "u32")
+   (suf~1,A 2177026350u "u32")
+   (suf@F,A 2456956037u "u32")
+   (suf~X,B 2730485921u "u32")
+   (suf~H,B 2820302411u "u32")
+   (suf~1,B 3259730800u "u32")
+   (suf@F,B 3345764771u "u32")
+   (suf~X,C 3516065817u "u32")
+   (suf~H,C 3600352804u "u32")
+   (suf~1,C 4094571909u "u32")
+   (suf@F,C 275423344u "u32")
+   (suf~X,D 430227734u "u32")
+   (suf~H,D 506948616u "u32")
+   (suf~1,D 659060556u "u32")
+   (suf@F,D 883997877u "u32")
+   (suf~X,E 958139571u "u32")
+   (suf~H,E 1322822218u "u32")
+   (suf~1,E 1537002063u "u32")
+   (suf@F,E 1747873779u "u32")
+   (suf~X,F 1955562222u "u32")
+   (suf~H,F 2024104815u "u32")
+   (suf~1,F 2227730452u "u32")
+   (suf@F,F 2361852424u "u32")
+   (suf~X,G 2428436474u "u32")
+   (suf~H,G 2756734187u "u32")
+   (suf~1,G 3204031479u "u32")
+   (suf@F,G 3329325298u "u32")))
+ (proc@,S rotr32@5 . . .
+  (params@B
+   (param@1 x . . uint32@3 .)
+   (param@C n . . int@3 .))uint32@L
+  (pragmas@d inline@2).
+  (stmts@2,1
+   (infix@I or
+    (par~I
+     (infix@3 shr x~2
+      (call@A uint32~6 n@1)))
+    (par@3
+     (infix@3 shl x~2
+      (call@A uint32~6
+       (infix@4 \2D 32~3 n@2)))))))
+ (proc@,V sha256@5 x . .
+  (params@C
+   (param@1 msg . .
+    (at@E openArray~9 byte@1).))
+  (at@T array~5 32@1 byte@5). .
+  (stmts@2,1
+   (var@4 h . .
+    (at@8 array~5 8@1 uint32@4)
+    (bracket@M
+     (suf~O,1 1779033703u "u32")
+     (suf~8,1 3144134277u "u32")
+     (suf@8,1 1013904242u "u32")
+     (suf@O,1 2773480762u "u32")
+     (suf~O,2 1359893119u "u32")
+     (suf~8,2 2600822924u "u32")
+     (suf@8,2 528734635u "u32")
+     (suf@O,2 1541459225u "u32")))
+   (var@4,6 data . . .
+    (call@J
+     (at~6 newSeq~6 byte@1)
+     (dot@4 msg~3 len@1)))
+   (for@4,7
+    (infix@7 \2E\2E< 0~2
+     (dot@7 msg~3 len@1))
+    (unpackflat
+     (let i . . ..))
+    (stmts@K
+     (asgn@8
+      (at~4 data~4 i@1)
+      (at@5 msg~3 i@1))))
+   (let@4,8 bitLen . . .
+    (infix@P *
+     (call~A uint64~6
+      (dot@4 msg~3 len@1))
+     (suf@2 8u "u64")))
+   (call@8,9
+    (dot~4 data~4 add@1)
+    (suf@1 128u "u8"))
+   (while@,A
+    (infix@O !=
+     (par~I
+      (infix@A mod
+       (dot~5 data~4 len@1)64@4))56@3)
+    (stmts@2,1
+     (call@8
+      (dot~4 data~4 add@1)
+      (suf@1 0u "u8"))))
+   (var@4,C shift . . . 56@8)
+   (while@,D
+    (infix@C >= shift~6 0@3)
+    (stmts@2,1
+     (call@8
+      (dot~4 data~4 add@1)
+      (call@6 uint8~5
+       (infix@S and
+        (par~R
+         (infix@8 shr bitLen~7
+          (call@A uint64~6 shift@1)))
+        (suf@4 255u "u64"))))
+     (infix@6,1 \2D= shift~6 8@3)))
+   (var@4,H blockStart . . . 0@D)
+   (while@,I
+    (infix@H < blockStart~B
+     (dot@6 data~4 len@1))
+    (stmts@2,1
+     (var@4 w . .
+      (at@8 array~5 64@1 uint32@5).)
+     (for@4,1
+      (infix@7 \2E\2E< 0~2 16@4)
+      (unpackflat
+       (let t . . ..))
+      (stmts~2,1
+       (let@4 o . . .
+        (infix@F \2B blockStart~B
+         (infix@4 * t~2 4@2)))
+       (asgn@5,1
+        (at~4 w~1 t@1)
+        (infix@S,1 or
+         (infix@T,~1 or
+          (infix~U or
+           (par~P
+            (infix@H shl
+             (call~A uint32~6
+              (at@5 data~4 o@1))24@4))
+           (par@3
+            (infix@J shl
+             (call~C uint32~6
+              (at@5 data~4
+               (infix@2 \2B o~1 1@1)))16@4)))
+          (par~t,1
+           (infix@J shl
+            (call~C uint32~6
+             (at@5 data~4
+              (infix@2 \2B o~1 2@1)))8@4)))
+         (call@9 uint32~6
+          (at@5 data~4
+           (infix@2 \2B o~1 3@1)))))))
+     (for@4,5
+      (infix@8 \2E\2E< 16~3 64@4)
+      (unpackflat
+       (let t . . ..))
+      (stmts~2,1
+       (let@4 s0 . . .
+        (infix@m xor
+         (infix~O xor
+          (call~D rotr32~6
+           (at@2 w~1
+            (infix@2 \2D t~1 15@1))7@A)
+          (call@A rotr32~6
+           (at@2 w~1
+            (infix@2 \2D t~1 15@1))18@A))
+         (par@4
+          (infix@9 shr
+           (at~7 w~1
+            (infix@2 \2D t~1 15@1))
+           (suf@4 3u "u32")))))
+       (let@4,1 s1 . . .
+        (infix@l xor
+         (infix~N xor
+          (call~D rotr32~6
+           (at@2 w~1
+            (infix@2 \2D t~1 2@1))17@9)
+          (call@A rotr32~6
+           (at@2 w~1
+            (infix@2 \2D t~1 2@1))19@9))
+         (par@4
+          (infix@8 shr
+           (at~6 w~1
+            (infix@2 \2D t~1 2@1))
+           (suf@4 10u "u32")))))
+       (asgn@5,2
+        (at~4 w~1 t@1)
+        (infix@O \2B
+         (infix~9 \2B
+          (infix~5 \2B
+           (at~7 w~1
+            (infix@2 \2D t~1 16@1))s0@2)
+          (at@3 w~1
+           (infix@2 \2D t~1 7@1)))s1@2))))
+     (var@4,A a . . .
+      (at@5 h~1 0@1))
+     (var@I,A b . . .
+      (at@5 h~1 1@1))
+     (var@W,A c . . .
+      (at@5 h~1 2@1))
+     (var@k,A d . . .
+      (at@5 h~1 3@1))
+     (var@4,B e . . .
+      (at@5 h~1 4@1))
+     (var@I,B f . . .
+      (at@5 h~1 5@1))
+     (var@W,B g . . .
+      (at@5 h~1 6@1))
+     (var@k,B hh . . .
+      (at@6 h~1 7@1))
+     (for@4,D
+      (infix@7 \2E\2E< 0~2 64@4)
+      (unpackflat
+       (let t . . ..))
+      (stmts~2,1
+       (let@4 s1 . . .
+        (infix@a xor
+         (infix~I xor
+          (call~7 rotr32~6 e@1 6@4)
+          (call@A rotr32~6 e@1 11@4))
+         (call@A rotr32~6 e@1 25@4)))
+       (let@4,1 ch . . .
+        (infix@F xor
+         (par~A
+          (infix@3 and e~2 f@4))
+         (par@4
+          (infix@9 and
+           (par~8
+            (prefix@1 not e@4))g@4))))
+       (let@4,2 temp1 . . .
+        (infix@Y \2B
+         (infix~D \2B
+          (infix~5 \2B
+           (infix~5 \2B hh~3 s1@2)ch@2)
+          (at@9 sha256K~7 t@1))
+         (at@3 w~1 t@1)))
+       (let@4,3 s0 . . .
+        (infix@a xor
+         (infix~I xor
+          (call~7 rotr32~6 a@1 2@4)
+          (call@A rotr32~6 a@1 13@4))
+         (call@A rotr32~6 a@1 22@4)))
+       (let@4,4 maj . . .
+        (infix@U xor
+         (infix~E xor
+          (par~A
+           (infix@3 and a~2 b@4))
+          (par@4
+           (infix@3 and a~2 c@4)))
+         (par@4
+          (infix@3 and b~2 c@4))))
+       (let@4,5 temp2 . . .
+        (infix@B \2B s0~3 maj@2))
+       (asgn@3,6 hh~3 g@2)
+       (asgn@A,6 g~2 f@2)
+       (asgn@H,6 f~2 e@2)
+       (asgn@O,6 e~2
+        (infix@4 \2B d~2 temp1@2))
+       (asgn@2,7 d~2 c@2)
+       (asgn@9,7 c~2 b@2)
+       (asgn@G,7 b~2 a@2)
+       (asgn@N,7 a~2
+        (infix@8 \2B temp1~6 temp2@2))))
+     (infix@5,N \2B=
+      (at~4 h~1 0@1)a@3)
+     (infix@G,N \2B=
+      (at~4 h~1 1@1)b@3)
+     (infix@R,N \2B=
+      (at~4 h~1 2@1)c@3)
+     (infix@c,N \2B=
+      (at~4 h~1 3@1)d@3)
+     (infix@5,O \2B=
+      (at~4 h~1 4@1)e@3)
+     (infix@G,O \2B=
+      (at~4 h~1 5@1)f@3)
+     (infix@R,O \2B=
+      (at~4 h~1 6@1)g@3)
+     (infix@c,O \2B=
+      (at~4 h~1 7@1)hh@3)
+     (infix@B,P \2B= blockStart~B 64@3)))
+   (for@4,k
+    (infix@7 \2E\2E< 0~2 8@4)
+    (unpackflat
+     (let i . . ..))
+    (stmts~2,1
+     (asgn@C
+      (at~6 result~6
+       (infix@2 * i~1 4@1))
+      (call@7 uint8~5
+       (infix@6 shr
+        (at~4 h~1 i@1)24@4)))
+     (asgn@E,1
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 4@1)1@1))
+      (call@7 uint8~5
+       (infix@F and
+        (par~E
+         (infix@6 shr
+          (at~4 h~1 i@1)16@4))
+        (suf@4 255u "u32"))))
+     (asgn@E,2
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 4@1)2@1))
+      (call@7 uint8~5
+       (infix@E and
+        (par~D
+         (infix@6 shr
+          (at~4 h~1 i@1)8@4))
+        (suf@4 255u "u32"))))
+     (asgn@E,3
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 4@1)3@1))
+      (call@7 uint8~5
+       (infix@6 and
+        (at~4 h~1 i@1)
+        (suf@4 255u "u32"))))))))
+ (const@6,1Q sha512K . .
+  (at@E array~5 80@1 uint64@5)
+  (bracket@T
+   (suf~X,1 4794697086780616226u "u64")
+   (suf~9,1 8158064640168781261u "u64")
+   (suf@F,1 13096744586834688815u "u64")
+   (suf@d,1 16840607885511220156u "u64")
+   (suf~X,2 4131703408338449720u "u64")
+   (suf~9,2 6480981068601479193u "u64")
+   (suf@F,2 10538285296894168987u "u64")
+   (suf@d,2 12329834152419229976u "u64")
+   (suf~X,3 15566598209576043074u "u64")
+   (suf~9,3 1334009975649890238u "u64")
+   (suf@F,3 2608012711638119052u "u64")
+   (suf@d,3 6128411473006802146u "u64")
+   (suf~X,4 8268148722764581231u "u64")
+   (suf~9,4 9286055187155687089u "u64")
+   (suf@F,4 11230858885718282805u "u64")
+   (suf@d,4 13951009754708518548u "u64")
+   (suf~X,5 16472876342353939154u "u64")
+   (suf~9,5 17275323862435702243u "u64")
+   (suf@F,5 1135362057144423861u "u64")
+   (suf@d,5 2597628984639134821u "u64")
+   (suf~X,6 3308224258029322869u "u64")
+   (suf~9,6 5365058923640841347u "u64")
+   (suf@F,6 6679025012923562964u "u64")
+   (suf@d,6 8573033837759648693u "u64")
+   (suf~X,7 10970295158949994411u "u64")
+   (suf~9,7 12119686244451234320u "u64")
+   (suf@F,7 12683024718118986047u "u64")
+   (suf@d,7 13788192230050041572u "u64")
+   (suf~X,8 14330467153632333762u "u64")
+   (suf~9,8 15395433587784984357u "u64")
+   (suf@F,8 489312712824947311u "u64")
+   (suf@d,8 1452737877330783856u "u64")
+   (suf~X,9 2861767655752347644u "u64")
+   (suf~9,9 3322285676063803686u "u64")
+   (suf@F,9 5560940570517711597u "u64")
+   (suf@d,9 5996557281743188959u "u64")
+   (suf~X,A 7280758554555802590u "u64")
+   (suf~9,A 8532644243296465576u "u64")
+   (suf@F,A 9350256976987008742u "u64")
+   (suf@d,A 10552545826968843579u "u64")
+   (suf~X,B 11727347734174303076u "u64")
+   (suf~9,B 12113106623233404929u "u64")
+   (suf@F,B 14000437183269869457u "u64")
+   (suf@d,B 14369950271660146224u "u64")
+   (suf~X,C 15101387698204529176u "u64")
+   (suf~9,C 15463397548674623760u "u64")
+   (suf@F,C 17586052441742319658u "u64")
+   (suf@d,C 1182934255886127544u "u64")
+   (suf~X,D 1847814050463011016u "u64")
+   (suf~9,D 2177327727835720531u "u64")
+   (suf@F,D 2830643537854262169u "u64")
+   (suf@d,D 3796741975233480872u "u64")
+   (suf~X,E 4115178125766777443u "u64")
+   (suf~9,E 5681478168544905931u "u64")
+   (suf@F,E 6601373596472566643u "u64")
+   (suf@d,E 7507060721942968483u "u64")
+   (suf~X,F 8399075790359081724u "u64")
+   (suf~9,F 8693463985226723168u "u64")
+   (suf@F,F 9568029438360202098u "u64")
+   (suf@d,F 10144078919501101548u "u64")
+   (suf~X,G 10430055236837252648u "u64")
+   (suf~9,G 11840083180663258601u "u64")
+   (suf@F,G 13761210420658862357u "u64")
+   (suf@d,G 14299343276471374635u "u64")
+   (suf~X,H 14566680578165727644u "u64")
+   (suf~9,H 15097957966210449927u "u64")
+   (suf@F,H 16922976911328602910u "u64")
+   (suf@d,H 17689382322260857208u "u64")
+   (suf~X,I 500013540394364858u "u64")
+   (suf~9,I 748580250866718886u "u64")
+   (suf@F,I 1242879168328830382u "u64")
+   (suf@d,I 1977374033974150939u "u64")
+   (suf~X,J 2944078676154940804u "u64")
+   (suf~9,J 3659926193048069267u "u64")
+   (suf@F,J 4368137639120453308u "u64")
+   (suf@d,J 4836135668995329356u "u64")
+   (suf~X,K 5532061633213252278u "u64")
+   (suf~9,K 6448918945643986474u "u64")
+   (suf@F,K 6902733635092675308u "u64")
+   (suf@d,K 7801388544844847127u "u64")))
+ (proc@,1n rotr64@5 . . .
+  (params@B
+   (param@1 x . . uint64@3 .)
+   (param@C n . . int@3 .))uint64@L
+  (pragmas@d inline@2).
+  (stmts@2,1
+   (infix@I or
+    (par~I
+     (infix@3 shr x~2
+      (call@A uint64~6 n@1)))
+    (par@3
+     (infix@3 shl x~2
+      (call@A uint64~6
+       (infix@4 \2D 64~3 n@2)))))))
+ (proc@,1q sha512Core@5 . . .
+  (params@F
+   (param@1 msg . .
+    (at@E openArray~9 byte@1).)
+   (param@N iv . .
+    (at@9 array~5 8@1 uint64@4).))
+  (at@p array~5 8@1 uint64@4). .
+  (stmts@2,1
+   (var@4 h . . . iv@4)
+   (var@4,2 data . . .
+    (call@J
+     (at~6 newSeq~6 byte@1)
+     (dot@4 msg~3 len@1)))
+   (for@4,3
+    (infix@7 \2E\2E< 0~2
+     (dot@7 msg~3 len@1))
+    (unpackflat
+     (let i . . ..))
+    (stmts@K
+     (asgn@8
+      (at~4 data~4 i@1)
+      (at@5 msg~3 i@1))))
+   (let@4,6 bitLen . . .
+    (infix@P *
+     (call~A uint64~6
+      (dot@4 msg~3 len@1))
+     (suf@2 8u "u64")))
+   (call@8,7
+    (dot~4 data~4 add@1)
+    (suf@1 128u "u8"))
+   (while@,8
+    (infix@P !=
+     (par~J
+      (infix@A mod
+       (dot~5 data~4 len@1)128@4))112@3)
+    (stmts@2,1
+     (call@8
+      (dot~4 data~4 add@1)
+      (suf@1 0u "u8"))))
+   (for@4,A
+    (infix@7 \2E\2E< 0~2 8@4)
+    (unpackflat
+     (let i . . ..))
+    (stmts~2,1
+     (call@8
+      (dot~4 data~4 add@1)
+      (suf@1 0u "u8"))))
+   (var@4,C shift . . . 56@8)
+   (while@,D
+    (infix@C >= shift~6 0@3)
+    (stmts@2,1
+     (call@8
+      (dot~4 data~4 add@1)
+      (call@6 uint8~5
+       (infix@S and
+        (par~R
+         (infix@8 shr bitLen~7
+          (call@A uint64~6 shift@1)))
+        (suf@4 255u "u64"))))
+     (infix@6,1 \2D= shift~6 8@3)))
+   (var@4,H blockStart . . . 0@D)
+   (while@,I
+    (infix@H < blockStart~B
+     (dot@6 data~4 len@1))
+    (stmts@2,1
+     (var@4 w . .
+      (at@8 array~5 80@1 uint64@5).)
+     (for@4,1
+      (infix@7 \2E\2E< 0~2 16@4)
+      (unpackflat
+       (let t . . ..))
+      (stmts~2,1
+       (let@4 o . . .
+        (infix@F \2B blockStart~B
+         (infix@4 * t~2 8@2)))
+       (var@4,1 v . . .
+        (suf@4 0u "u64"))
+       (for@4,2
+        (infix@7 \2E\2E< 0~2 8@4)
+        (unpackflat
+         (let j . . ..))
+        (stmts~2,1
+         (asgn@2 v~2
+          (infix@C or
+           (par~A
+            (infix@3 shl v~2 8@4))
+           (call@9 uint64~6
+            (at@5 data~4
+             (infix@3 \2B o~2 j@2)))))))
+       (asgn@5,4
+        (at~4 w~1 t@1)v@2)))
+     (for@4,7
+      (infix@8 \2E\2E< 16~3 80@4)
+      (unpackflat
+       (let t . . ..))
+      (stmts~2,1
+       (let@4 s0 . . .
+        (infix@l xor
+         (infix~N xor
+          (call~D rotr64~6
+           (at@2 w~1
+            (infix@2 \2D t~1 15@1))1@A)
+          (call@A rotr64~6
+           (at@2 w~1
+            (infix@2 \2D t~1 15@1))8@A))
+         (par@4
+          (infix@9 shr
+           (at~7 w~1
+            (infix@2 \2D t~1 15@1))
+           (suf@4 7u "u64")))))
+       (let@4,1 s1 . . .
+        (infix@l xor
+         (infix~N xor
+          (call~D rotr64~6
+           (at@2 w~1
+            (infix@2 \2D t~1 2@1))19@9)
+          (call@A rotr64~6
+           (at@2 w~1
+            (infix@2 \2D t~1 2@1))61@9))
+         (par@4
+          (infix@8 shr
+           (at~6 w~1
+            (infix@2 \2D t~1 2@1))
+           (suf@4 6u "u64")))))
+       (asgn@5,2
+        (at~4 w~1 t@1)
+        (infix@O \2B
+         (infix~9 \2B
+          (infix~5 \2B
+           (at~7 w~1
+            (infix@2 \2D t~1 16@1))s0@2)
+          (at@3 w~1
+           (infix@2 \2D t~1 7@1)))s1@2))))
+     (var@4,C a . . .
+      (at@5 h~1 0@1))
+     (var@I,C b . . .
+      (at@5 h~1 1@1))
+     (var@W,C c . . .
+      (at@5 h~1 2@1))
+     (var@k,C d . . .
+      (at@5 h~1 3@1))
+     (var@4,D e . . .
+      (at@5 h~1 4@1))
+     (var@I,D f . . .
+      (at@5 h~1 5@1))
+     (var@W,D g . . .
+      (at@5 h~1 6@1))
+     (var@k,D hh . . .
+      (at@6 h~1 7@1))
+     (for@4,F
+      (infix@7 \2E\2E< 0~2 80@4)
+      (unpackflat
+       (let t . . ..))
+      (stmts~2,1
+       (let@4 s1 . . .
+        (infix@b xor
+         (infix~I xor
+          (call~8 rotr64~6 e@1 14@4)
+          (call@A rotr64~6 e@1 18@4))
+         (call@A rotr64~6 e@1 41@4)))
+       (let@4,1 ch . . .
+        (infix@F xor
+         (par~A
+          (infix@3 and e~2 f@4))
+         (par@4
+          (infix@9 and
+           (par~8
+            (prefix@1 not e@4))g@4))))
+       (let@4,2 temp1 . . .
+        (infix@Y \2B
+         (infix~D \2B
+          (infix~5 \2B
+           (infix~5 \2B hh~3 s1@2)ch@2)
+          (at@9 sha512K~7 t@1))
+         (at@3 w~1 t@1)))
+       (let@4,3 s0 . . .
+        (infix@b xor
+         (infix~I xor
+          (call~8 rotr64~6 a@1 28@4)
+          (call@A rotr64~6 a@1 34@4))
+         (call@A rotr64~6 a@1 39@4)))
+       (let@4,4 maj . . .
+        (infix@U xor
+         (infix~E xor
+          (par~A
+           (infix@3 and a~2 b@4))
+          (par@4
+           (infix@3 and a~2 c@4)))
+         (par@4
+          (infix@3 and b~2 c@4))))
+       (let@4,5 temp2 . . .
+        (infix@B \2B s0~3 maj@2))
+       (asgn@3,6 hh~3 g@2)
+       (asgn@A,6 g~2 f@2)
+       (asgn@H,6 f~2 e@2)
+       (asgn@O,6 e~2
+        (infix@4 \2B d~2 temp1@2))
+       (asgn@2,7 d~2 c@2)
+       (asgn@9,7 c~2 b@2)
+       (asgn@G,7 b~2 a@2)
+       (asgn@N,7 a~2
+        (infix@8 \2B temp1~6 temp2@2))))
+     (infix@5,P \2B=
+      (at~4 h~1 0@1)a@3)
+     (infix@G,P \2B=
+      (at~4 h~1 1@1)b@3)
+     (infix@R,P \2B=
+      (at~4 h~1 2@1)c@3)
+     (infix@c,P \2B=
+      (at~4 h~1 3@1)d@3)
+     (infix@5,Q \2B=
+      (at~4 h~1 4@1)e@3)
+     (infix@G,Q \2B=
+      (at~4 h~1 5@1)f@3)
+     (infix@R,Q \2B=
+      (at~4 h~1 6@1)g@3)
+     (infix@c,Q \2B=
+      (at~4 h~1 7@1)hh@3)
+     (infix@B,R \2B= blockStart~B 128@3)))h@,m))
+ (proc@,2f sha512@5 x . .
+  (params@C
+   (param@1 msg . .
+    (at@E openArray~9 byte@1).))
+  (at@T array~5 64@1 byte@5)
+  (pragmas@q noinit@2).
+  (stmts@2,1
+   (let@4 iv . .
+    (at@9 array~5 8@1 uint64@4)
+    (bracket@N
+     (suf~P,1 7640891576956012808u "u64")
+     (suf~1,1 13503953896175478587u "u64")
+     (suf@N,1 4354685564936845355u "u64")
+     (suf@l,1 11912009170470909681u "u64")
+     (suf~P,2 5840696475078001361u "u64")
+     (suf~1,2 11170449401992604703u "u64")
+     (suf@N,2 2270897969802886507u "u64")
+     (suf@l,2 6620516959819538809u "u64")))
+   (let@4,4 h . . .
+    (call@E sha512Core~A msg@1 iv@6))
+   (for@4,5
+    (infix@7 \2E\2E< 0~2 8@4)
+    (unpackflat
+     (let i . . ..))
+    (stmts~2,1
+     (asgn@E
+      (at~8 result~6
+       (infix@2 * i~1 8@1))
+      (call@7 uint8~5
+       (infix@J and
+        (par~I
+         (infix@6 shr
+          (at~4 h~1 i@1)
+          (suf@4 56u "u64")))
+        (suf@4 255u "u64"))))
+     (asgn@E,1
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 8@1)1@1))
+      (call@7 uint8~5
+       (infix@J and
+        (par~I
+         (infix@6 shr
+          (at~4 h~1 i@1)
+          (suf@4 48u "u64")))
+        (suf@4 255u "u64"))))
+     (asgn@E,2
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 8@1)2@1))
+      (call@7 uint8~5
+       (infix@J and
+        (par~I
+         (infix@6 shr
+          (at~4 h~1 i@1)
+          (suf@4 40u "u64")))
+        (suf@4 255u "u64"))))
+     (asgn@E,3
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 8@1)3@1))
+      (call@7 uint8~5
+       (infix@J and
+        (par~I
+         (infix@6 shr
+          (at~4 h~1 i@1)
+          (suf@4 32u "u64")))
+        (suf@4 255u "u64"))))
+     (asgn@E,4
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 8@1)4@1))
+      (call@7 uint8~5
+       (infix@J and
+        (par~I
+         (infix@6 shr
+          (at~4 h~1 i@1)
+          (suf@4 24u "u64")))
+        (suf@4 255u "u64"))))
+     (asgn@E,5
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 8@1)5@1))
+      (call@7 uint8~5
+       (infix@J and
+        (par~I
+         (infix@6 shr
+          (at~4 h~1 i@1)
+          (suf@4 16u "u64")))
+        (suf@4 255u "u64"))))
+     (asgn@E,6
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 8@1)6@1))
+      (call@7 uint8~5
+       (infix@I and
+        (par~H
+         (infix@6 shr
+          (at~4 h~1 i@1)
+          (suf@4 8u "u64")))
+        (suf@4 255u "u64"))))
+     (asgn@E,7
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 8@1)7@1))
+      (call@7 uint8~5
+       (infix@6 and
+        (at~4 h~1 i@1)
+        (suf@4 255u "u64"))))))))
+ (proc@,2v sha384@5 x . .
+  (params@C
+   (param@1 msg . .
+    (at@E openArray~9 byte@1).))
+  (at@T array~5 48@1 byte@5)
+  (pragmas@q noinit@2).
+  (stmts@2,1
+   (let@4 iv . .
+    (at@9 array~5 8@1 uint64@4)
+    (bracket@N
+     (suf~P,1 14680500436340154072u "u64")
+     (suf~1,1 7105036623409894663u "u64")
+     (suf@N,1 10473403895298186519u "u64")
+     (suf@l,1 1526699215303891257u "u64")
+     (suf~P,2 7436329637833083697u "u64")
+     (suf~1,2 10282925794625328401u "u64")
+     (suf@N,2 15784041429090275239u "u64")
+     (suf@l,2 5167115440072839076u "u64")))
+   (let@4,4 h . . .
+    (call@E sha512Core~A msg@1 iv@6))
+   (for@4,5
+    (infix@7 \2E\2E< 0~2 6@4)
+    (unpackflat
+     (let i . . ..))
+    (stmts~2,1
+     (asgn@E
+      (at~8 result~6
+       (infix@2 * i~1 8@1))
+      (call@7 uint8~5
+       (infix@J and
+        (par~I
+         (infix@6 shr
+          (at~4 h~1 i@1)
+          (suf@4 56u "u64")))
+        (suf@4 255u "u64"))))
+     (asgn@E,1
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 8@1)1@1))
+      (call@7 uint8~5
+       (infix@J and
+        (par~I
+         (infix@6 shr
+          (at~4 h~1 i@1)
+          (suf@4 48u "u64")))
+        (suf@4 255u "u64"))))
+     (asgn@E,2
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 8@1)2@1))
+      (call@7 uint8~5
+       (infix@J and
+        (par~I
+         (infix@6 shr
+          (at~4 h~1 i@1)
+          (suf@4 40u "u64")))
+        (suf@4 255u "u64"))))
+     (asgn@E,3
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 8@1)3@1))
+      (call@7 uint8~5
+       (infix@J and
+        (par~I
+         (infix@6 shr
+          (at~4 h~1 i@1)
+          (suf@4 32u "u64")))
+        (suf@4 255u "u64"))))
+     (asgn@E,4
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 8@1)4@1))
+      (call@7 uint8~5
+       (infix@J and
+        (par~I
+         (infix@6 shr
+          (at~4 h~1 i@1)
+          (suf@4 24u "u64")))
+        (suf@4 255u "u64"))))
+     (asgn@E,5
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 8@1)5@1))
+      (call@7 uint8~5
+       (infix@J and
+        (par~I
+         (infix@6 shr
+          (at~4 h~1 i@1)
+          (suf@4 16u "u64")))
+        (suf@4 255u "u64"))))
+     (asgn@E,6
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 8@1)6@1))
+      (call@7 uint8~5
+       (infix@I and
+        (par~H
+         (infix@6 shr
+          (at~4 h~1 i@1)
+          (suf@4 8u "u64")))
+        (suf@4 255u "u64"))))
+     (asgn@E,7
+      (at~8 result~6
+       (infix@4 \2B
+        (infix~2 * i~1 8@1)7@1))
+      (call@7 uint8~5
+       (infix@6 and
+        (at~4 h~1 i@1)
+        (suf@4 255u "u64")))))))))
