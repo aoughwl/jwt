@@ -2,7 +2,7 @@ import std/assertions
 import std/syncio
 import ../src/jwt
 import ../src/hmac
-import ../src/minijson
+import std/json
 import ../src/base64url
 
 proc hv(c: char): int =
@@ -18,11 +18,10 @@ proc bytesFromHex(s: string): seq[byte] =
     result[i div 2] = uint8(hv(s[i]) * 16 + hv(s[i+1]))
     i += 2
 
-proc getStr(v: nil JsonValue, key: string): string =
-  if v == nil: return ""
-  let f = objGet(v, key)
-  if f == nil or f.kind != jkString: return ""
-  f.strVal
+proc claim(v: JsonNode, key: string): string =
+  let f = v.member(key)
+  if f.kind != JString: return ""
+  f.getStr
 
 # --- ES384 end-to-end: a real JWT minted by an independent implementation
 # (Python's pycryptodome, fresh random P-384 keypair) with a genuine
@@ -35,7 +34,7 @@ let result = verifyJwt(token, pubKey)
 assert result.ok
 echo "ES384 end-to-end JWT (minted by pycryptodome, unrelated implementation) verified: OK"
 
-assert getStr(result.payload, "sub") == "test-user"
+assert claim(result.payload, "sub") == "test-user"
 echo "payload claim readback: OK"
 
 # Tampering with the token (flip a payload char) must fail verification.
@@ -75,7 +74,7 @@ let hsKey = bytesFromHex("00112233445566778899aabbccddeeff00112233445566778899aa
 let hsToken = buildHs256Jwt("""{"alg":"HS256","typ":"JWT"}""", """{"role":"admin"}""", hsKey)
 let hsResult = verifyJwt(hsToken, hsKey)
 assert hsResult.ok
-assert getStr(hsResult.payload, "role") == "admin"
+assert claim(hsResult.payload, "role") == "admin"
 echo "HS256 end-to-end: OK"
 
 let hsWrongKeyResult = verifyJwt(hsToken, bytesFromHex("ff112233445566778899aabbccddeeff00112233445566778899aabbccddee"))

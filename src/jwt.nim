@@ -5,17 +5,37 @@
 ## algorithm this library was originally built for - Minecraft Bedrock's
 ## login-chain JWTs). RS* (RSA) is not implemented; see README.md.
 
-import base64url, minijson, hmac, sha2, ecdsa, bignum
+import std/json
+import base64url, hmac, sha2, ecdsa, bignum
 
 type
   JwtVerifyResult* = object
     ok*: bool
-    header*: nil JsonValue
-    payload*: nil JsonValue
+    header*: JsonNode    ## JNull-kind node unless `ok`
+    payload*: JsonNode   ## JNull-kind node unless `ok`
     error*: string
 
 proc failResult(msg: string): JwtVerifyResult =
-  JwtVerifyResult(ok: false, header: nil, payload: nil, error: msg)
+  JwtVerifyResult(ok: false, header: JsonNode(), payload: JsonNode(), error: msg)
+
+proc member*(n: JsonNode, key: string): JsonNode =
+  ## Object member lookup: a JNull-kind node when `n` is not an object or has no `key`.
+  result = JsonNode()
+  if n.kind != JObject: return
+  for k, v in pairs(n):
+    if k == key:
+      result = v
+      return
+
+proc parseSegment(json: string, node: var JsonNode): string =
+  ## Parses one decoded JWT segment. Returns "" on success (node is then the
+  ## document root, which stays alive after the tree goes out of scope) or the
+  ## parser's diagnostic.
+  var tree = parseJson(json)
+  let err = tree.errorMsg
+  if err.len > 0: return err
+  node = tree.root
+  ""
 
 proc splitToken(token: string): (bool, string, string, string) =
   var parts: seq[string] = @[]
@@ -36,11 +56,10 @@ proc bytesToSeq(s: string): seq[byte] =
   for i, c in s:
     result[i] = byte(c)
 
-proc getAlg(header: nil JsonValue): string =
-  if header == nil: return ""
-  let a = objGet(header, "alg")
-  if a == nil or a.kind != jkString: return ""
-  a.strVal
+proc getAlg(header: JsonNode): string =
+  let a = header.member("alg")
+  if a.kind != JString: return ""
+  a.getStr
 
 proc verifyJwt*(token: string, key: openArray[byte]): JwtVerifyResult =
   ## Verifies `token` against `key`, dispatching on the header's `alg`.
@@ -54,15 +73,15 @@ proc verifyJwt*(token: string, key: openArray[byte]): JwtVerifyResult =
   let payloadJson = decodeB64Url(payloadB64)
   let sig = decodeB64Url(sigB64)
 
-  let headerParse = parseJson(headerJson)
-  if not headerParse.ok or headerParse.value == nil:
-    return failResult("invalid header JSON: " & headerParse.error)
-  let header = headerParse.value
+  var header = JsonNode()
+  let headerErr = parseSegment(headerJson, header)
+  if headerErr.len > 0:
+    return failResult("invalid header JSON: " & headerErr)
 
-  let payloadParse = parseJson(payloadJson)
-  if not payloadParse.ok or payloadParse.value == nil:
-    return failResult("invalid payload JSON: " & payloadParse.error)
-  let payload = payloadParse.value
+  var payload = JsonNode()
+  let payloadErr = parseSegment(payloadJson, payload)
+  if payloadErr.len > 0:
+    return failResult("invalid payload JSON: " & payloadErr)
 
   let alg = getAlg(header)
   let signingInput = headerB64 & "." & payloadB64
@@ -118,10 +137,12 @@ proc decodeJwtUnsafe*(token: string): JwtVerifyResult =
   let (ok, headerB64, payloadB64, _) = splitToken(token)
   if not ok:
     return failResult("malformed token: expected 3 dot-separated segments")
-  let headerParse = parseJson(decodeB64Url(headerB64))
-  let payloadParse = parseJson(decodeB64Url(payloadB64))
-  if not headerParse.ok or headerParse.value == nil:
-    return failResult("invalid header JSON: " & headerParse.error)
-  if not payloadParse.ok or payloadParse.value == nil:
-    return failResult("invalid payload JSON: " & payloadParse.error)
-  JwtVerifyResult(ok: true, header: headerParse.value, payload: payloadParse.value, error: "")
+  var header = JsonNode()
+  let headerErr = parseSegment(decodeB64Url(headerB64), header)
+  if headerErr.len > 0:
+    return failResult("invalid header JSON: " & headerErr)
+  var payload = JsonNode()
+  let payloadErr = parseSegment(decodeB64Url(payloadB64), payload)
+  if payloadErr.len > 0:
+    return failResult("invalid payload JSON: " & payloadErr)
+  JwtVerifyResult(ok: true, header: header, payload: payload, error: "")

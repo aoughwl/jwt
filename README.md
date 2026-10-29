@@ -1,9 +1,10 @@
 # jwt
 
 A JWT (JSON Web Token) library for [Nimony](https://github.com/aoughwl/nimony),
-written from scratch because Nimony's stdlib has none of the pieces JWT
-needs: no JSON parser, no SHA-256/384/512 (only SHA-1), no HMAC, no
-big-integer arithmetic, and no elliptic-curve crypto.
+written from scratch because Nimony's stdlib lacks the crypto pieces JWT
+needs: no SHA-256/384/512 (only SHA-1), no HMAC, no big-integer
+arithmetic, and no elliptic-curve crypto. JSON parsing uses Nimony's own
+`std/json`.
 
 Built originally to unblock the Nimony port of
 [Pumpkin](https://github.com/Pumpkin-MC/Pumpkin) (a Minecraft server, see
@@ -22,7 +23,6 @@ library, not a one-off.
 | HMAC-SHA256/384/512 | `src/hmac.nim` | RFC 4231 test case 1 (built on the verified SHA-2 primitives) |
 | Arbitrary-precision bignum | `src/bignum.nim` | Cross-checked against Python; Fermat's little theorem against the real P-384 field prime; modular-inverse round-trip |
 | ECDSA verify, NIST P-384 (ES384) | `src/ecdsa.nim` | A **real** secp384r1/SHA-384 test vector from Google's [Wycheproof](https://github.com/google/wycheproof) project, cross-checked against Python's `pycryptodome` (an independent implementation) |
-| Minimal JSON parser | `src/minijson.nim` | Nested objects/arrays, escapes, null, malformed-input rejection |
 | `verifyJwt()` public API | `src/jwt.nim` | **End-to-end**: a real ES384 JWT minted entirely by `pycryptodome` (unrelated implementation, fresh random keypair) verifies successfully using only this library's code; tamper/wrong-key/wrong-message are all correctly rejected. HS256 self-sign-and-verify round-trip also covered. |
 
 Run any test with:
@@ -59,10 +59,6 @@ never typed from memory and trusted blindly.
   b, gx, gy, n`); adding P-256/P-521 is mostly a matter of adding their
   NIST SP 800-186 constants and, for P-256, checking whether its curve
   order needs anything P-384-specific removed.
-- **Strict UTF-8/CESU-8 string handling** in `minijson.nim`'s `\uXXXX`
-  escapes: BMP code points only, no surrogate-pair recombination for
-  code points above U+FFFF. Not needed for JWT header/payload fields in
-  practice.
 - **DER-encoded ECDSA signatures.** `ecdsa.nim`'s `verifyEcdsaP384`/
   `jwt.nim`'s ES384 path both expect raw `r || s` (JOSE's encoding, and
   what a JWT actually contains). A DER decoder (ASN.1 SEQUENCE of two
@@ -90,7 +86,6 @@ src/
   hmac.nim        -- HMAC-SHA256/384/512
   bignum.nim      -- arbitrary-precision unsigned integer arithmetic
   ecdsa.nim       -- NIST P-384 point arithmetic + ECDSA verify
-  minijson.nim    -- minimal JSON parser
   jwt.nim         -- verifyJwt() / decodeJwtUnsafe() public API
 tests/
   test_*.nim      -- one test file per src/ module, each runnable standalone
